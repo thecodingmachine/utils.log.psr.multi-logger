@@ -15,6 +15,18 @@ use Psr\Log\AbstractLogger;
  * A logger class that writes messages into the php error_log.
  */
 class MultiLogger extends AbstractLogger {
+	
+	/**
+	 * @var LoggerInterface[] $loggers
+	 */
+	private $loggers;
+	
+	/**
+	 * @param LoggerInterface[] $loggers
+	 */
+	public function __construct($loggers){
+		$this->loggers = $loggers;
+	}
 
     /**
      * Logs with an arbitrary level.
@@ -25,7 +37,10 @@ class MultiLogger extends AbstractLogger {
      * @return null
      */
     public function log($level, $message, array $context = array()) {
-    	//TODO
+    	foreach ($this->loggers as $logger){
+    		/* @var $logger LoggerInterface */
+    		$logger->log($level, $message, $context);
+    	}
     }
     
 }
