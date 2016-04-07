@@ -1,13 +1,37 @@
 What is this package
 ====================
 
-<div class="alert"><strong>DEPRECATED!</strong> Warning, this package is deprecated in favor of
-<em>mouf/utils.log.psr.errorlog_logger</em> that implements the same logger, but with PSR-3
-compatibility.</div>
+This package contains a PSR-3 compliant composite logger class.
 
-This package contains a logger that logs messages in the PHP error log, using the error_log function.
+In practice, this class does not log anything but delegates logging to one or many PSR-3 compliant loggers.
+This is useful when you want to call multiple loggers at one.
 
-Mouf package
-------------
+Install
+-------
 
-This package is part of Mouf (http://mouf-php.com), an effort to ensure good developing practices by providing a graphical dependency injection framework.
+```sh
+composer require mouf/utils.log.psr.multi-logger
+```
+
+Usage
+-----
+
+Simply pass an array of loggers to the multi-logger:
+
+```php
+$logger1 = new MyLogger();
+$logger2 = new AnotherLogger();
+
+$multiLogger = new Mouf\Utils\Log\Psr\MultiLogger([ $logger1, $logger2 ]);
+```
+
+You can also add loggers using the `addLogger` method:
+
+```php
+$logger1 = new MyLogger();
+$logger2 = new AnotherLogger();
+
+$multiLogger = new Mouf\Utils\Log\Psr\MultiLogger();
+$multiLogger->addLogger($logger1);
+$multiLogger->addLogger($logger2);
+```
