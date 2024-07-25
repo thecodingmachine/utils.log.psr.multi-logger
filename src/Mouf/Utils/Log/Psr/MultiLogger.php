@@ -16,40 +16,31 @@ use Psr\Log\AbstractLogger;
  */
 class MultiLogger extends AbstractLogger
 {
-    /**
-     * @var LoggerInterface[]
-     */
-    private $loggers;
+    /** @var LoggerInterface[] */
+    private array $loggers;
 
     /**
      * @param LoggerInterface[] $loggers Array of loggers to be called
      */
-    public function __construct(array $loggers = array())
+    public function __construct(array $loggers = [])
     {
         $this->loggers = $loggers;
     }
 
     /**
      * Adds a logger to the list of loggers.
-     *
-     * @param LoggerInterface $logger
      */
-    public function addLogger(LoggerInterface $logger)
+    public function addLogger(LoggerInterface $logger): void
     {
         $this->loggers[] = $logger;
     }
 
     /**
-     * Logs with an arbitrary level.
-     *
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
+     * {@inheritdoc}
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, string|\Stringable $message, array $context = []): void
     {
         foreach ($this->loggers as $logger) {
-            /* @var $logger LoggerInterface */
             $logger->log($level, $message, $context);
         }
     }
